@@ -36,6 +36,7 @@
 
 ## 3. 装饰器
   装饰器实现使用了闭包。总结：参数对应关系以嵌套函数的形式展显，定义完了后，再逐级返回函数引用，但是最里层return的函数引用，必须是被修饰的原函数引用。
+## 3.1 函数装饰器
 ### 3.1 @后有参数
   有参数时，嵌套函数（从外到里）的参数，依次对应：装饰器参数（@tf_export("temp")）-> 被修饰的函数的引用 -> 被修饰的函数的参数
 ### 3.2 @后没有参数
@@ -93,6 +94,49 @@
     2
     sub *************************************
     1
+
+## 3.2 类装饰器
+### 无参数
+    class tracer: 
+        def __init__(self,func): 
+            self.calls = 0 
+            self.func = func 
+        def __call__(self,*args): 
+            self.calls += 1 
+            print('call %s to %s' %(self.calls, self.func.__name__)) 
+            self.func(*args) 
+
+    @tracer
+    def spam(a, b, c): 
+        print(a + b + c) 
+    spam(1,2,3)
+    [out]: 
+    # call 1 to spam
+    # 6
+
+### 有参数
+    class tracer:  
+        def __init__(self, *args):  
+            self.calls = 0
+            self.args = args
+
+        def __call__(self, func):
+            self.func = func
+            def realfunc(*args):
+                  self.calls += 1
+                  print('call %s to %s' %(self.calls, self.func.__name__))
+                  print(self.args[0])
+                  self.func(*args)
+            return realfunc
+
+    @tracer("xxxx")
+    def spam(a, b, c):  
+        print(a + b + c)  
+    spam(1,2,3)
+    [out]: 
+    # call 1 to spam
+    # xxxx
+    # 6
 
 ## 4. @property
   既能检查参数，又可以用类似属性这样简单的方式来访问类的变量
