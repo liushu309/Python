@@ -1,5 +1,7 @@
 ## collections.namedtuple的理解
-  将类的定义和生成这个类的对象在一行代码中完成，如：对象名 = collections.namedtuple('定义的类名', ['定义属性名1', '定义属性名2', ...])，再在第二行代码中，对这个对象进行赋值，如下图所示
+  将类的定义和生成这个类的对象在一行代码中完成，如：
+    对象名 = collections.namedtuple('定义的类名', ['定义属性名1', '定义属性名2', ...])，
+  再在第二行代码中，对这个对象进行赋值，如下图所示
 ![image](https://github.com/liushu309/Python/blob/master/collections_namedtuple.png)
 
     import collections
